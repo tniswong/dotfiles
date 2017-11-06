@@ -1,0 +1,8 @@
+alias dm="docker-machine"
+alias dc="docker-compose"
+
+export DOCKERHUB_ORG="homepay"
+alias dbuild='function __dbuild() { __REPO=${1:-$(basename $(pwd))}; __IMAGE=$(echo "${__REPO}" | sed "s/\///"); __BRANCH=$(git -C .${1:+/${__REPO}} rev-parse --abbrev-ref HEAD); if [ -n "$(git -C .${1:+/${__REPO}} status -s)" ]; then __SHORTREV=$(git -C .${1:+/${__REPO}} rev-parse --short HEAD).wip; else __SHORTREV=$(git -C .${1:+/${__REPO}} rev-parse --short HEAD); fi; __ISODATE=$(date -u +"%Y%m%dT%H%M%SZ"); __SEMVER=$(cat ${1:+${__REPO}/}version.txt)-${__BRANCH}-${__ISODATE}.${__SHORTREV}; docker build --rm=true -f ${1:+${__IMAGE}/}Dockerfile -t ${DOCKERHUB_ORG}/${__IMAGE}:latest -t ${DOCKERHUB_ORG}/${__IMAGE}:${__SEMVER} .${1:+/${__IMAGE}}; if [ -n "$(git -C .${1:+/${__REPO}} status -s)" ]; then echo "Warning: Uncommitted changes detected in ${__REPO}. Proceed with caution."; fi; printf "\nTagged as: \n\n${DOCKERHUB_ORG}/${__IMAGE}:latest\n${DOCKERHUB_ORG}/${__IMAGE}:${__SEMVER}\n"; unset -f __dbuild; unset -v __SEMVER; unset -v __ISODATE; unset -v __SHORTREV; unset -v __BRANCH; unset -v __IMAGE; unset -v __REPO; }; __dbuild'
+alias denv='function __denv() { eval "$(dm env $@)"; unset -f __denv; }; __denv'
+alias tenv='function __tenv() { eval "$(triton env --docker $@)"; unset -f __tenv; }; __tenv'
+

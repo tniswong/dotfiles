@@ -1,0 +1,6 @@
+# Detect which `ls` flavor is in use
+colorflag="-G"
+export LSCOLORS='gxBxhxDxfxhxhxhxhxcxcx'
+
+# Always use color output for `ls`
+alias ls="command ls ${colorflag}"

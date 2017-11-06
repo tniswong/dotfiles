@@ -1,0 +1,11 @@
+export GOPATH=${HOME}/Projects/golang
+export AUTOCONF_HOME=/usr/local/autoconf
+
+# Add Homebrew `/usr/local/bin` and User `~/bin` to the `$PATH`
+PATH=/usr/local/bin:$PATH
+PATH=$HOME/bin:$PATH
+
+PATH=$GOPATH/bin:$PATH
+PATH=$AUTOCONF_HOME/bin:$PATH
+
+export PATH
